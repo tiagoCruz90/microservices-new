@@ -11,5 +11,5 @@ public interface OrderService {
 
     List<OrderRequestDTO> getAllOrders();
 
-    void updateOrder(Long Id, OrderRequestDTO orderRequestDTO);
+    void updateOrder(Long iD, OrderRequestDTO orderRequestDTO);
 }

@@ -1,12 +1,15 @@
 package com.tutorial.order.service.impl;
 
+
 import com.tutorial.order.domain.Order;
 import com.tutorial.order.domain.OrderLineItems;
+import com.tutorial.order.dto.InventoryResponseDTO;
 import com.tutorial.order.dto.OrderLineItemsDTO;
 import com.tutorial.order.dto.OrderRequestDTO;
 import com.tutorial.order.repository.OrderRepository;
 import com.tutorial.order.service.OrderService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,6 +17,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final WebClient webClient;
 
     @Override
     public void placeOrder(OrderRequestDTO orderRequestDTO) {
@@ -33,7 +39,28 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
 
         order.setOrderLineItemsList(orderLineItemsList);
-        orderRepository.save(order);
+
+        List<String> skuCodes = order.getOrderLineItemsList()
+                .stream()
+                .map(OrderLineItems::getSkuCode)
+                .toList();
+
+        //Call inventory service to check the availability of the product
+       InventoryResponseDTO[] inventoryResponseDTOS =  webClient.get()
+                .uri("http://localhost:8082/api/inventory",uriBuilder -> uriBuilder
+                        .queryParam("skuCode", skuCodes).build())
+                .retrieve()
+                .bodyToMono(InventoryResponseDTO[].class)
+                .block(); //block will give a synchronous call
+
+        assert inventoryResponseDTOS != null;
+        boolean allProductsInStock = Arrays.stream(inventoryResponseDTOS)
+                    .allMatch(InventoryResponseDTO::isInStock);
+
+        if (allProductsInStock) {
+            orderRepository.save(order);
+        } else
+            throw new IllegalArgumentException("Product is not available, try again later");
     }
 
     @Override
@@ -46,8 +73,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(Long Id, OrderRequestDTO orderRequestDTO) {
-        Order order = orderRepository.findById(Id).orElseThrow();
+    public void updateOrder(Long id, OrderRequestDTO orderRequestDTO) {
+        Order order = orderRepository.findById(id).orElseThrow();
         order.setOrderNumber(UUID.randomUUID().toString());
 
         List<OrderLineItems> orderLineItemsList = orderRequestDTO.getOrderLineItemsDTOList()
@@ -74,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderLineItemsDTO> orderLineItemsDTOList = order.getOrderLineItemsList()
                 .stream()
                 .map(this::mapToOrderLineItemsDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         orderRequestDTO.setOrderLineItemsDTOList(orderLineItemsDTOList);
         return orderRequestDTO;

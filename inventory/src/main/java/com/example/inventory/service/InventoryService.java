@@ -1,5 +1,9 @@
 package com.example.inventory.service;
 
+import com.example.inventory.dto.InventoryResponseDTO;
+
+import java.util.List;
+
 public interface InventoryService {
-    boolean isInStock(String skuCode);
+    List<InventoryResponseDTO> isInStock(List<String> skuCode);
 }
