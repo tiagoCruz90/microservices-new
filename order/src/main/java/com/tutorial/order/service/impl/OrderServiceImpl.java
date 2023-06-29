@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
         //Call inventory service to check the availability of the product
        InventoryResponseDTO[] inventoryResponseDTOS =  webClient.get()
-                .uri("http://localhost:8082/api/inventory",uriBuilder -> uriBuilder
+                .uri("http://inventory-service/api/inventory",uriBuilder -> uriBuilder
                         .queryParam("skuCode", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponseDTO[].class)
