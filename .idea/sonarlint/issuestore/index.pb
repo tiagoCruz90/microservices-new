@@ -7,8 +7,6 @@ l
 <order/src/main/java/com/tutorial/order/OrderApplication.java,9/f/9f31891cf17d1a3371b916e496da11e5c714211e
 t
 Dorder/src/main/java/com/tutorial/order/dto/InventoryResponseDTO.java,f/c/fc1a84fea8e0a4f6924737fd8466df994e311dbd
-H
-discovery-server/pom.xml,2/c/2c58c7878e43d126fc56cae853d5b06de57d0b3e
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
