@@ -1,6 +1,5 @@
 package com.tutorial.order.service.impl;
 
-
 import com.tutorial.order.domain.Order;
 import com.tutorial.order.domain.OrderLineItems;
 import com.tutorial.order.dto.InventoryResponseDTO;
@@ -12,13 +11,11 @@ import com.tutorial.order.service.OrderService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-
 
 @RequiredArgsConstructor
 @Service
@@ -26,7 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public void placeOrder(OrderRequestDTO orderRequestDTO) {
@@ -46,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
 
         //Call inventory service to check the availability of the product
-       InventoryResponseDTO[] inventoryResponseDTOS =  webClient.get()
+       InventoryResponseDTO[] inventoryResponseDTOS =  webClientBuilder.build().get()
                 .uri("http://inventory-service/api/inventory",uriBuilder -> uriBuilder
                         .queryParam("skuCode", skuCodes).build())
                 .retrieve()
