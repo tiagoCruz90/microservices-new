@@ -1,5 +1,6 @@
 package com.tutorial.discoveryservice.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,13 +18,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${eureka.username}")
+    private String username;
+    @Value("${eureka.password}")
+    private String password;
+
     @Bean
     public UserDetailsService users() {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         User.UserBuilder users = User.builder().passwordEncoder(encoder::encode);
 
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(users.username("eureka").password("password").roles("USER").build());
+        manager.createUser(users.username(username).password(password)
+                .roles("USER").build());
 
         return manager;
     }
