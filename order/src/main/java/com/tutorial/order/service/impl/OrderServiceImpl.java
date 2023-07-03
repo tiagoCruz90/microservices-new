@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,8 @@ public class OrderServiceImpl implements OrderService {
     private final WebClient.Builder webClientBuilder;
 
     @Override
-    public void placeOrder(OrderRequestDTO orderRequestDTO) {
+
+    public String placeOrder(OrderRequestDTO orderRequestDTO) {
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -56,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
 
         if (allProductsInStock) {
             orderRepository.save(order);
+            return "Order placed successfully";
         } else
             throw new IllegalArgumentException("Product is not available, try again later");
     }
@@ -82,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderLineItemsList(orderLineItemsList);
         orderRepository.save(order);
     }
+
 
 
     private OrderLineItems mapToDTO(OrderLineItemsDTO orderLineItemsDTO) {
@@ -112,4 +117,6 @@ public class OrderServiceImpl implements OrderService {
         orderLineItemsDTO.setPrice(orderLineItems.getPrice());
         return orderLineItemsDTO;
     }
+
+
 }
