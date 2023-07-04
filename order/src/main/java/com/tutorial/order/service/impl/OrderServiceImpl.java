@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
             } else
                 throw new IllegalArgumentException("Product is not available, try again later");
         } finally {
-            inventoryServiceLookup.finish()
+            inventoryServiceLookup.finish();
         }
     }
 
