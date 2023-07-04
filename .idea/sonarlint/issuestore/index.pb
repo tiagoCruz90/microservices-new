@@ -15,13 +15,9 @@ d
 4api-gateway/src/main/java/config/SecurityConfig.java,f/0/f07d3c9fb8a3df4e05c5413d704bbfff3d4adfbd
 ‡
 Wdiscovery-server/src/main/java/com/tutorial/discoveryservice/config/SecurityConfig.java,a/a/aaea6cba63c22f22d0fc7bc3b8b0f4558e61e440
-y
-Iorder/src/main/java/com/tutorial/order/service/impl/OrderServiceImpl.java,6/9/69749a9f97b91f7db41ddda0baeb5086aa120095
 p
 @order/src/main/java/com/tutorial/order/service/OrderService.java,3/4/34a203633610599979575cb66ce611e647031f5b
 v
 Forder/src/main/java/com/tutorial/order/controller/OrderController.java,0/9/09d3af849541c2911040d33ae6e88aca6bb1d467
-…
-Uinventory/src/main/java/com/tutorial/inventory/service/impl/InventoryServiceImpl.java,d/f/df7f8d5d397c6c5234581d31da7fbecbc09501ab
 |
 Lproduct/src/main/java/com/tutorial/product/controller/ProductController.java,3/7/3739eb9f98838f5d8f1ef6c44e33aaabd3af0bb0

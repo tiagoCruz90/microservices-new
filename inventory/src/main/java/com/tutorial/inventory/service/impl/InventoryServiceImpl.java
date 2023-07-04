@@ -20,9 +20,6 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional(readOnly = true)
     @SneakyThrows //don't use this in production
     public List<InventoryResponseDTO> isInStock(List<String> skuCode) {
-        log.info("Wait started");
-        Thread.sleep(10000);
-        log.info("Wait ended");
         return inventoryRepository.findBySkuCodeIn(skuCode)
                 .stream()
                 .map(inventory ->

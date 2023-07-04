@@ -1,5 +1,7 @@
 package com.tutorial.order.service.impl;
 
+import brave.Span;
+import brave.Tracer;
 import com.tutorial.order.domain.Order;
 import com.tutorial.order.domain.OrderLineItems;
 import com.tutorial.order.dto.InventoryResponseDTO;
@@ -11,9 +13,6 @@ import com.tutorial.order.service.OrderService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final Tracer tracer;
 
     @Override
 
@@ -45,23 +45,31 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .toList();
 
-        //Call inventory service to check the availability of the product
-       InventoryResponseDTO[] inventoryResponseDTOS =  webClientBuilder.build().get()
-                .uri("http://inventory-service/api/inventory",uriBuilder -> uriBuilder
-                        .queryParam("skuCode", skuCodes).build())
-                .retrieve()
-                .bodyToMono(InventoryResponseDTO[].class)
-                .block(); //block will give a synchronous call
+        Span inventoryServiceLookup = tracer.nextSpan().name("InventoryServiceLookup");
 
-        assert inventoryResponseDTOS != null;
-        boolean allProductsInStock = Arrays.stream(inventoryResponseDTOS)
+        try (Tracer.SpanInScope spanInScope = tracer.withSpanInScope(inventoryServiceLookup.start())) {
+
+
+            //Call inventory service to check the availability of the product
+            InventoryResponseDTO[] inventoryResponseDTOS = webClientBuilder.build().get()
+                    .uri("http://inventory-service/api/inventory", uriBuilder -> uriBuilder
+                            .queryParam("skuCode", skuCodes).build())
+                    .retrieve()
+                    .bodyToMono(InventoryResponseDTO[].class)
+                    .block(); //block will give a synchronous call
+
+            assert inventoryResponseDTOS != null;
+            boolean allProductsInStock = Arrays.stream(inventoryResponseDTOS)
                     .allMatch(InventoryResponseDTO::isInStock);
 
-        if (allProductsInStock) {
-            orderRepository.save(order);
-            return "Order placed successfully";
-        } else
-            throw new IllegalArgumentException("Product is not available, try again later");
+            if (allProductsInStock) {
+                orderRepository.save(order);
+                return "Order placed successfully";
+            } else
+                throw new IllegalArgumentException("Product is not available, try again later");
+        } finally {
+            inventoryServiceLookup.finish();
+        }
     }
 
     @Override
