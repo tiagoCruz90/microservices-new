@@ -5,9 +5,6 @@ l
 <order/src/main/java/com/tutorial/order/OrderApplication.java,9/f/9f31891cf17d1a3371b916e496da11e5c714211e
 t
 Dorder/src/main/java/com/tutorial/order/dto/InventoryResponseDTO.java,f/c/fc1a84fea8e0a4f6924737fd8466df994e311dbd
-:
-
-.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 r
 Border/src/main/java/com/tutorial/order/config/WebClientConfig.java,0/8/08b2ecc3fbad2561256adbf6d401af524b041246
 x
@@ -18,8 +15,6 @@ d
 4api-gateway/src/main/java/config/SecurityConfig.java,f/0/f07d3c9fb8a3df4e05c5413d704bbfff3d4adfbd
 ‡
 Wdiscovery-server/src/main/java/com/tutorial/discoveryservice/config/SecurityConfig.java,a/a/aaea6cba63c22f22d0fc7bc3b8b0f4558e61e440
-7
-pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 y
 Iorder/src/main/java/com/tutorial/order/service/impl/OrderServiceImpl.java,6/9/69749a9f97b91f7db41ddda0baeb5086aa120095
 p
@@ -28,3 +23,5 @@ v
 Forder/src/main/java/com/tutorial/order/controller/OrderController.java,0/9/09d3af849541c2911040d33ae6e88aca6bb1d467
 …
 Uinventory/src/main/java/com/tutorial/inventory/service/impl/InventoryServiceImpl.java,d/f/df7f8d5d397c6c5234581d31da7fbecbc09501ab
+|
+Lproduct/src/main/java/com/tutorial/product/controller/ProductController.java,3/7/3739eb9f98838f5d8f1ef6c44e33aaabd3af0bb0
