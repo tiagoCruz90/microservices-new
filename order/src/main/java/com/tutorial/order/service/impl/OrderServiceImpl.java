@@ -52,7 +52,6 @@ public class OrderServiceImpl implements OrderService {
 
         try (Tracer.SpanInScope spanInScope = tracer.withSpanInScope(inventoryServiceLookup.start())) {
 
-
             //Call inventory service to check the availability of the product
             InventoryResponseDTO[] inventoryResponseDTOS = webClientBuilder.build().get()
                     .uri("http://inventory-service/api/inventory", uriBuilder -> uriBuilder
@@ -67,12 +66,12 @@ public class OrderServiceImpl implements OrderService {
 
             if (allProductsInStock) {
                 orderRepository.save(order);
-                kafkaTemplate.send("notification-topic", new OrderPlacedEvent(order.getOrderNumber()));
+                kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
                 return "Order placed successfully";
             } else
                 throw new IllegalArgumentException("Product is not available, try again later");
         } finally {
-            inventoryServiceLookup.flush();
+            inventoryServiceLookup.finish()
         }
     }
 

@@ -15,7 +15,5 @@ d
 4api-gateway/src/main/java/config/SecurityConfig.java,f/0/f07d3c9fb8a3df4e05c5413d704bbfff3d4adfbd
 ‡
 Wdiscovery-server/src/main/java/com/tutorial/discoveryservice/config/SecurityConfig.java,a/a/aaea6cba63c22f22d0fc7bc3b8b0f4558e61e440
-v
-Forder/src/main/java/com/tutorial/order/controller/OrderController.java,0/9/09d3af849541c2911040d33ae6e88aca6bb1d467
 |
 Lproduct/src/main/java/com/tutorial/product/controller/ProductController.java,3/7/3739eb9f98838f5d8f1ef6c44e33aaabd3af0bb0
