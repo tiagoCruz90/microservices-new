@@ -7,6 +7,7 @@ import com.tutorial.order.domain.OrderLineItems;
 import com.tutorial.order.dto.InventoryResponseDTO;
 import com.tutorial.order.dto.OrderLineItemsDTO;
 import com.tutorial.order.dto.OrderRequestDTO;
+import com.tutorial.order.event.OrderPlacedEvent;
 import com.tutorial.order.repository.OrderRepository;
 import com.tutorial.order.service.OrderService;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
     private final Tracer tracer;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     @Override
 
@@ -64,11 +67,12 @@ public class OrderServiceImpl implements OrderService {
 
             if (allProductsInStock) {
                 orderRepository.save(order);
+                kafkaTemplate.send("notification-topic", new OrderPlacedEvent(order.getOrderNumber()));
                 return "Order placed successfully";
             } else
                 throw new IllegalArgumentException("Product is not available, try again later");
         } finally {
-            inventoryServiceLookup.finish();
+            inventoryServiceLookup.flush();
         }
     }
 
