@@ -28,8 +28,6 @@ C
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 ?
 product/pom.xml,c/a/cae8333de7fc3bae59917f00a8cc124140367b26
-B
-docker-compose.yml,3/5/35b8c13cf2eb2a194eada000eb310d65aed53b2a
 r
 Border/src/main/java/com/tutorial/order/event/OrderPlacedEvent.java,d/1/d1dc830de54d978d91b1de767d3db606ccd22418
 L
@@ -54,7 +52,3 @@ y
 Iorder/src/main/java/com/tutorial/order/service/impl/OrderServiceImpl.java,6/9/69749a9f97b91f7db41ddda0baeb5086aa120095
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-N
-api-gateway/Dockerfile.layered,9/8/985aae4f95e5f25b49363a8e39e43dc2925f69c1
-F
-api-gateway/Dockerfile,9/5/9548e2ce3bdfe112d8c757987e1beebc1ecab5ed

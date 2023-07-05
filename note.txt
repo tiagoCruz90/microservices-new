@@ -1,0 +1,17 @@
+if we have the jib plugin:
+
+1- go to the apache maven directory conf/settings.xml
+and add the following:
+<servers>
+      <server>
+        <id>registry.hub.docker.com</id>
+        <username>username-dockerhub</username>
+        <password>password-dockerhub!</password>
+      </server>
+</servers>
+
+2- after that, update the mvn in the ide and the run the following command in the project directory:
+mvn clean compile jib:build
+
+if we have a Dockerfile, wether it be a multi-stage or not, we can use the following command:
+docker build -t nameoftheapp -f Dockerfile .

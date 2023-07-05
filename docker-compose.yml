@@ -1,5 +1,87 @@
 version: '3'
 services:
+  ##MySQL Docker Compose Configuration
+  MySQL-Order:
+    container_name: MySQL-Order
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: order-db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+        - "3307:3306"
+    expose:
+      - "3307"
+    command: -p 3307:3306
+    volumes:
+        - ./mysql:/var/lib/mysql
+    restart: unless-stopped
+
+  MySQL-Inventory:
+    container_name: MySQL-Inventory
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: inventory-service-db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+        - "3308:3306"
+    expose:
+      - "3308"
+    command: -p 3308:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    restart: unless-stopped
+## MongoDB Docker Compose Configuration
+  MongoDB:
+    container_name: mongo
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    volumes:
+      - ./mongodb:/data/db
+    restart: unless-stopped
+
+   ## Keycloak Docker Compose Configuration
+  keycloak-mysql:
+    container_name: keycloak-mysql
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    command: [ "start-dev", "--import-realm" ]
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - "8087:8080"
+    volumes:
+      - ./realms/:/opt/keycloak/data/import/
+    expose:
+      - "8087"
+    depends_on:
+      - keycloak-mysql
+    restart: unless-stopped
+
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
@@ -22,3 +104,50 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+## Zipkin
+  zipkin:
+   image: openzipkin/zipkin
+   container_name: zipkin
+   ports:
+    - "9411:9411"
+
+## Discovery Server
+  discovery-server:
+    image: tcruz25/discovery-server:latest
+    container_name: discovery-server
+    pull_policy: always
+    ports:
+      - "8761:8761"
+    environment:
+        - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+
+## API Gateway
+  api-gateway:
+    image: tcruz25/api-gateway:latest
+    container_name: api-gateway
+    pull_policy: always
+    ports:
+      - "8087:8080"
+    expose:
+      - "8087"
+    environment:
+        - SPRING_PROFILES_ACTIVE=docker
+        - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+        - discovery-server
+        - zipkin
+        - keycloak
+
+## Product Service
+  product-service:
+    image: tcruz25/product-service:latest
+    container_name: product-service
+    environment:
+        - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+        - discovery-server
+        - api-gateway
+        - mongo
