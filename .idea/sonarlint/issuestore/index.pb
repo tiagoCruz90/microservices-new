@@ -32,8 +32,6 @@ B
 docker-compose.yml,3/5/35b8c13cf2eb2a194eada000eb310d65aed53b2a
 r
 Border/src/main/java/com/tutorial/order/event/OrderPlacedEvent.java,d/1/d1dc830de54d978d91b1de767d3db606ccd22418
-7
-pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 L
 notification-service/pom.xml,0/1/01f9e880c9ba9f01d23d7605950269a1f1661129
 u

@@ -34,8 +34,6 @@ r
 Border/src/main/java/com/tutorial/order/event/OrderPlacedEvent.java,d/1/d1dc830de54d978d91b1de767d3db606ccd22418
 L
 notification-service/pom.xml,0/1/01f9e880c9ba9f01d23d7605950269a1f1661129
-7
-pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 u
 Enotification-service/src/main/java/com/tutorial/OrderPlacedEvent.java,9/b/9beceb7f2850131dec7a39881de142112a4ea7a1
 ƒ
