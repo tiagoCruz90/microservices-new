@@ -19,8 +19,6 @@ Wdiscovery-server/src/main/java/com/tutorial/discoveryservice/config/SecurityCon
 Lproduct/src/main/java/com/tutorial/product/controller/ProductController.java,3/7/3739eb9f98838f5d8f1ef6c44e33aaabd3af0bb0
 Œ
 \discovery-server/src/main/java/com/tutorial/discoveryservice/DiscoveryServerApplication.java,d/8/d8b1f61892fddf3bcca16ab14c4fea721e4cda15
-A
-inventory/pom.xml,3/7/37033d2d2379d338fa05cb0e02583bc14d51c5ee
 C
 api-gateway/pom.xml,2/b/2bfa2b108f2439e99e004f4085b58c22cf995f73
 :
@@ -40,8 +38,6 @@ Uinventory/src/main/java/com/tutorial/inventory/service/impl/InventoryServiceImp
 Rinventory/src/main/java/com/tutorial/inventory/controller/InventoryController.java,8/c/8cbcc2f7a4536543dafb3918dff8c8328d83ca44
 H
 discovery-server/pom.xml,2/c/2c58c7878e43d126fc56cae853d5b06de57d0b3e
-=
-order/pom.xml,2/7/27ca9127fd75386d2b0342cfd7de9e3e93791f5b
 ƒ
 Snotification-service/src/main/java/com/tutorial/NotificationServiceApplication.java,d/9/d99c14de875d68802bca50df7c811ce58511597c
 v
@@ -52,3 +48,7 @@ y
 Iorder/src/main/java/com/tutorial/order/service/impl/OrderServiceImpl.java,6/9/69749a9f97b91f7db41ddda0baeb5086aa120095
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
+F
+api-gateway/Dockerfile,9/5/9548e2ce3bdfe112d8c757987e1beebc1ecab5ed
+N
+api-gateway/Dockerfile.layered,9/8/985aae4f95e5f25b49363a8e39e43dc2925f69c1
