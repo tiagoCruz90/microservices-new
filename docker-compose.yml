@@ -142,6 +142,7 @@ services:
     product-service:
       image: tcruz25/product:latest
       container_name: product-service
+      pull_policy: always
       environment:
         - SPRING_PROFILES_ACTIVE=docker
       depends_on:

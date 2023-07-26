@@ -21,7 +21,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @CircuitBreaker(name = "inventory", fallbackMethod = "placeOrderFallback")
+    //@CircuitBreaker(name = "inventory", fallbackMethod = "placeOrderFallback")
     @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
     public CompletableFuture<String> createOrder(@RequestBody OrderRequestDTO orderRequestDTO  ) {
@@ -41,7 +41,7 @@ public class OrderController {
       return "Order updated successfully";
     }
 
-    public CompletableFuture<String> placeOrderFallback(OrderRequestDTO orderRequestDTO, RuntimeException runtimeException){
+   /* public CompletableFuture<String> placeOrderFallback(OrderRequestDTO orderRequestDTO, RuntimeException runtimeException){
         return CompletableFuture.supplyAsync(()->"Order creation failed. Please try again later");
-    }
+    }*/
 }
