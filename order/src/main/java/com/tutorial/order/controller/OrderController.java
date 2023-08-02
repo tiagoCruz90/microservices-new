@@ -41,6 +41,13 @@ public class OrderController {
       return "Order updated successfully";
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteOrder(@PathVariable Long id){
+      orderService.deleteOrder(id);
+      return "Order deleted successfully";
+    }
+
    /* public CompletableFuture<String> placeOrderFallback(OrderRequestDTO orderRequestDTO, RuntimeException runtimeException){
         return CompletableFuture.supplyAsync(()->"Order creation failed. Please try again later");
     }*/

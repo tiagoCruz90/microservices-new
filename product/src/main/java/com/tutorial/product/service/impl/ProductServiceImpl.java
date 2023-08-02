@@ -44,14 +44,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(String Id, ProductRequestDTO productRequestDTO) {
-        Product product = productRepository.findById(Id).orElseThrow(() -> new RuntimeException("Product not found"));
+    public void updateProduct(String id, ProductRequestDTO productRequestDTO) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productRequestDTO.getName());
         product.setDescription(productRequestDTO.getDescription());
         product.setPrice(productRequestDTO.getPrice());
 
         productRepository.save(product);
         log.info("Product {} updated successfully", product.getId());
+    }
+
+    @Override
+    public void deleteProduct(String id) {
+        productRepository.deleteById(id);
+        log.info("Product {} deleted successfully", id);
+    }
+
+    @Override
+    public void deleteAllProducts() {
+        productRepository.deleteAll();
+        log.info("All Products deleted successfully");
     }
 
 

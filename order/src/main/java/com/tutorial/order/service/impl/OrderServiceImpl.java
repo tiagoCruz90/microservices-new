@@ -98,6 +98,15 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
     }
 
+    @Override
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllOrders() {
+        orderRepository.deleteAll();
+    }
 
 
     private OrderLineItems mapToDTO(OrderLineItemsDTO orderLineItemsDTO) {

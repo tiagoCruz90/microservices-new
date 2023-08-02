@@ -31,10 +31,16 @@ public class ProductController {
     }
 
 
-    @PutMapping("/{Id}")
+    @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public void updateProduct(@PathVariable String Id, @RequestBody ProductRequestDTO productRequestDTO) {
-        productService.updateProduct(Id, productRequestDTO);
+    public void updateProduct(@PathVariable String id, @RequestBody ProductRequestDTO productRequestDTO) {
+        productService.updateProduct(id, productRequestDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void deleteProduct(@PathVariable String id) {
+        productService.deleteProduct(id);
     }
 
 }
